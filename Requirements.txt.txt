@@ -18,3 +18,4 @@ Google Font:
 
 OTP: 
     npm install --save react-otp-input
+    npm install primereact

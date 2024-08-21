@@ -1,0 +1,134 @@
+// // src/RecipeCard.js
+// import React from 'react';
+// import { Card, CardMedia, CardContent, Typography, Rating } from '@mui/material';
+// import { FaStar } from 'react-icons/fa';
+// import { styled } from '@mui/material/styles';
+
+// // Styled components with MUI
+// const StyledCard = styled(Card)(({ theme }) => ({
+//   maxWidth: 300,
+//   margin: theme.spacing(2),
+//   transition: 'transform 0.3s',
+//   '&:hover': {
+//     transform: 'scale(1.05)',
+//   },
+// }));
+
+// const RecipeCard = ({ recipe }) => {
+//   return (
+//     <StyledCard>
+//       <CardMedia
+//         component="img"
+//         alt={recipe.recipeName}
+//         height="200"
+//         image={recipe.imageUrl}
+//       />
+//       <CardContent>
+//         <Typography variant="h6" component="div">
+//           {recipe.recipeName}
+//         </Typography>
+//         <Typography variant="body2" color="text.secondary" paragraph>
+//           {recipe.instruction}
+//         </Typography>
+//         <Rating
+//           name="read-only"
+//           value={parseFloat(recipe.ratings)}
+//           precision={0.1}
+//           readOnly
+//           icon={<FaStar style={{ color: '#FFA500' }} />}
+//         />
+//       </CardContent>
+//     </StyledCard>
+//   );
+// };
+
+// export default RecipeCard;
+
+// ------------------------------
+//  version 2
+// ------------------------------
+
+// src/RecipeCard.js
+// import React from 'react';
+// import { Card, CardMedia, CardContent, Typography, Rating, IconButton, Tooltip } from '@mui/material';
+// import { FaStar, FaClock, FaUtensils } from 'react-icons/fa';
+// import { styled } from '@mui/material/styles';
+// import { blue, orange, grey } from '@mui/material/colors';
+
+// // Styled components with MUI
+// const StyledCard = styled(Card)(({ theme }) => ({
+//   maxWidth: 300,
+//   margin: theme.spacing(2),
+//   borderRadius: theme.shape.borderRadius,
+//   overflow: 'hidden',
+//   boxShadow: theme.shadows[5],
+//   transition: 'transform 0.3s, box-shadow 0.3s',
+//   '&:hover': {
+//     transform: 'scale(1.05)',
+//     boxShadow: theme.shadows[10],
+//   },
+// }));
+
+// const RecipeImage = styled(CardMedia)({
+//   height: 200,
+//   objectFit: 'cover',
+//   transition: 'opacity 0.3s',
+//   '&:hover': {
+//     opacity: 0.8,
+//   },
+// });
+
+// const CardContentStyled = styled(CardContent)(({ theme }) => ({
+//   textAlign: 'center',
+//   backgroundColor: blue[50],
+//   padding: theme.spacing(2),
+// }));
+
+// const RecipeTitle = styled(Typography)(({ theme }) => ({
+//   fontWeight: 'bold',
+//   color: blue[800],
+// }));
+
+// const InfoContainer = styled('div')({
+//   display: 'flex',
+//   justifyContent: 'space-between',
+//   alignItems: 'center',
+//   marginTop: 10,
+// });
+
+// const InfoIcon = styled(IconButton)(({ theme }) => ({
+//   color: orange[600],
+// }));
+
+// const RecipeCard = ({ recipe }) => {
+//   return (
+//     <StyledCard>
+//       <RecipeImage
+//         component="img"
+//         alt={recipe.recipeName}
+//         image={recipe.imageUrl}
+//       />
+//       <CardContentStyled>
+//         <RecipeTitle variant="h6" component="div">
+//           {recipe.recipeName}
+//         </RecipeTitle>
+//         <Typography variant="body2" color="text.secondary" paragraph>
+//           {recipe.instruction}
+//         </Typography>
+//         <Rating
+//           name="read-only"
+//           value={parseFloat(recipe.ratings)}
+//           precision={0.1}
+//           readOnly
+//           icon={<FaStar style={{ color: orange[600] }} />}
+//         />
+//       </CardContentStyled>
+//     </StyledCard>
+//   );
+// };
+
+// export default RecipeCard;
+
+// -------------------------------------
+//  version 3
+// -------------------------------------
