@@ -136,7 +136,7 @@ function Home() {
   useEffect(() => {
     axios
       .get(`http://localhost:1310/recipes/all`)
-      .then(response => setRecipes(response.data.slice(0, 3))) // Limit to 3 recipes
+      .then(response => setRecipes(response.data.slice(0,3))) // Limit to 3 recipes
       .catch(err => console.log(err));
   }, []);
 
@@ -154,6 +154,15 @@ function Home() {
     item.productName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const availableProductNames = products
+    .filter(product => product.quantity > 0)
+    .map(product => product.productName.toLowerCase());
+
+  const filteredRecipes = recipes.filter(recipe => {
+    const ingredients = recipe.ingredients.split(',').map(ingredient => ingredient.trim().toLowerCase());
+    return ingredients.some(ingredient => availableProductNames.some(item => ingredient.includes(item.toLowerCase())));
+  });
+
   const handleDecrement = (id) => {
     setProducts(products.map(pro =>
       pro.productId === id ? { ...pro, quantity: Math.max(pro.quantity - 1, 0) } : pro
@@ -170,7 +179,8 @@ function Home() {
         .then((res) => {
           console.log(res.data);
           setSOpen(true); // Show Snackbar
-          setTimeout(() => {setSOpen(false)
+          setTimeout(() => {
+            setSOpen(false)
             window.location.reload()
           }, 3000);
         })
@@ -191,7 +201,7 @@ function Home() {
     navigate(path);
   };
 
-  const [sOpen,setSOpen] = useState(false);
+  const [sOpen, setSOpen] = useState(false);
 
   const handleSOpen = () => {
     setSOpen(true);
@@ -223,12 +233,12 @@ function Home() {
         {/* Hero Cards Section */}
         <div className="container mt-5">
 
-        <Typography variant="h2" align="center" color="primary" gutterBottom gutterTop>
-          Welcome to Smart Kitchen App
-        </Typography>
-        <Typography variant="h5" align="center" color="textSecondary" paragraph  gutterBottom>
-          Manage your kitchen inventory, add new products, and explore various features to make your cooking experience smarter and more efficient.
-        </Typography>
+          <Typography variant="h2" align="center" color="primary" gutterBottom gutterTop>
+            Welcome to Smart Kitchen App
+          </Typography>
+          <Typography variant="h5" align="center" color="textSecondary" paragraph gutterBottom>
+            Manage your kitchen inventory, add new products, and explore various features to make your cooking experience smarter and more efficient.
+          </Typography>
         </div>
 
         <Grid container spacing={3} justifyContent="center">
@@ -360,7 +370,7 @@ function Home() {
             Suggested Recipes
           </Typography>
           <Grid container spacing={2} justifyContent="center">
-            {recipes.map(recipe => {
+            {filteredRecipes.map(recipe => {
               const cardRef = React.createRef();
               return (
                 <Grid item xs={12} sm={6} md={4} key={recipe.recipeId}>
@@ -401,7 +411,7 @@ function Home() {
           </Box>
         </Box>
 
-        
+
 
         {/* Recipe Details Modal */}
         <Modal
@@ -453,14 +463,14 @@ function Home() {
         </Modal>
       </Container>
       {/* Footer */}
-      <Footer sx={{width:"100%"}}>
-          <Typography variant="body2" color="inherit">
-            © 2024 Smart Kitchen App. All rights reserved.
-          </Typography>
-          <Typography variant="body2" color="inherit">
-            "The only real stumbling block is fear of failure. In cooking, you can’t fail – just get better!"
-          </Typography>
-        </Footer>
+      <Footer sx={{ width: "100%" }}>
+        <Typography variant="body2" color="inherit">
+          © 2024 Smart Kitchen App. All rights reserved.
+        </Typography>
+        <Typography variant="body2" color="inherit">
+          "The only real stumbling block is fear of failure. In cooking, you can’t fail – just get better!"
+        </Typography>
+      </Footer>
     </div>
   );
 }
