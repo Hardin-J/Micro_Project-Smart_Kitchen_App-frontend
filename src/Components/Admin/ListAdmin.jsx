@@ -15,18 +15,25 @@ import {
     TextField,
     IconButton,
     Button,
-    Stack
+    Stack,
+    Alert,
+    Snackbar
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const ListAdmin = () => {
     const [filter, setFilter] = useState('');
     const [users, setUsers] = useState([]);
     const nav = useNavigate();
+
+    const [open, setOpen] = useState(false);
+    const [snackMsg, setSnackMsg] = useState('');
+    const [severity, setSeverity] = useState('');
 
     useEffect(() => {
         axios
@@ -48,7 +55,25 @@ const ListAdmin = () => {
     };
 
     const handleDelete = (userId) => {
-        setUsers(users.filter(user => user.userId !== userId));
+        // setUsers(users.filter(user => user.userId !== userId));
+        const conf = window.confirm("Do you want to Remove");
+        if (conf) {
+            axios
+                .delete("http://localhost:1310/admins/" + userId)
+                .then((res) => {
+                    setSnackMsg(res.data);
+                    setSeverity("error");
+                    setOpen(true); // Show Snackbar
+                    setTimeout(() => {
+                        setOpen(false)
+                        window.location.reload();
+                    }, 3000);
+                })
+                .catch((err) => console.log(err));
+        }
+    };
+    const handleEdit = (userId) => {
+        nav(`/editAdmin/${userId}`)
     };
 
     const filteredUsers = users.filter(user =>
@@ -105,6 +130,12 @@ const ListAdmin = () => {
                                         <TableCell>{user.emailId}</TableCell>
                                         <TableCell>
                                             <IconButton
+                                                color="primary"
+                                                onClick={() => handleEdit(user.adminId)}
+                                            >
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton
                                                 color="error"
                                                 onClick={() => handleDelete(user.adminId)}
                                             >
@@ -116,6 +147,11 @@ const ListAdmin = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Snackbar open={open} autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} onClose={() => setOpen(false)}>
+                        <Alert onClose={() => setOpen(false)} severity={severity} variant="filled" sx={{ width: '100%' }}>
+                            {snackMsg}
+                        </Alert>
+                    </Snackbar>
                 </Container>
             </Grid>
         </Grid>

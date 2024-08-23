@@ -14,13 +14,16 @@ import {
     TextField,
     IconButton,
     Button,
-    Stack
+    Stack,
+    Snackbar,
+    Alert
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import AdminNav from './AdminNav';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const AdminRecipeListing = () => {
@@ -28,6 +31,9 @@ const AdminRecipeListing = () => {
     const nav = useNavigate();
     const [filter, setFilter] = useState('');
     const [recipes, setRecipes] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [snackMsg, setSnackMsg] = useState('');
+    const [severity, setSeverity] = useState('');
 
     useEffect(() => {
         axios
@@ -45,8 +51,33 @@ const AdminRecipeListing = () => {
     };
 
     const handleDelete = (recipeId) => {
+        const conf = window.confirm("Do you want to Remove");
+        if (conf) {
+            axios
+                .delete("http://localhost:1310/recipes/" + recipeId)
+                .then((res) => {
+                    setSnackMsg(res.data);
+                    setSeverity("error");
+                    setOpen(true); // Show Snackbar
+                    setTimeout(() => {
+                        setOpen(false)
+                        window.location.reload();
+                    }, 3000);
+                })
+                .catch((err) => console.log(err));
+        }
         setRecipes(recipes.filter(recipe => recipe.recipeId !== recipeId));
     };
+
+    const handleEdit = (rid) => {
+        // const editR = recipes.filter(rec => rec.recipeId === rid)
+        // console.log(editR)
+        // const recip = JSON.stringify(editR); 
+        // console.log(recip)   
+        // sessionStorage.setItem("editR",JSON.stringify(editR))   
+        nav(`/editRecipe/${rid}`)
+    };
+
     const handleAddRecipe = (recipeId) => {
         nav("/addRecipe")
     };
@@ -111,12 +142,19 @@ const AdminRecipeListing = () => {
                                             }} />
                                         </TableCell>
                                         <TableCell>{recipe.ratings}</TableCell>
-                                        <TableCell>
+                                        <TableCell className='d'>
                                             <IconButton
                                                 color="error"
                                                 onClick={() => handleDelete(recipe.recipeId)}
                                             >
                                                 <DeleteIcon />
+                                            </IconButton>
+                                            <IconButton
+                                                alignItems={"center"}
+                                                color="primary"
+                                                onClick={() => handleEdit(recipe.recipeId)}
+                                            >
+                                                <EditIcon />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -125,6 +163,11 @@ const AdminRecipeListing = () => {
                         </Table>
                     </TableContainer>
                 </Container>
+                <Snackbar open={open} autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} onClose={() => setOpen(false)}>
+                    <Alert onClose={() => setOpen(false)} severity={severity} variant="filled" sx={{ width: '100%' }}>
+                        {snackMsg}
+                    </Alert>
+                </Snackbar>
             </Grid>
         </Grid>
     );

@@ -8,7 +8,6 @@ import { Alert, Snackbar } from '@mui/material';
 
 export default function SampleDemo() {
     const [token, setTokens] = useState('');
-    const [otp, setOtp] = useState('');
     const [isValid, setIsValid] = useState(null); // To handle OTP validation status
     const [isResending, setIsResending] = useState(false); // To handle resend state
     const [open, setOpen] = useState(false);
@@ -21,10 +20,10 @@ export default function SampleDemo() {
 
     const validateOtp = () => {
         axios
-          .get(`http://localhost:1310/mailServices/verifyOtp/${token}`)
-          .then((response) => {
+            .get(`http://localhost:1310/mailServices/verifyOtp/${token}`)
+            .then((response) => {
                 console.log(response.data);
-                if(response.data === "Success"){
+                if (response.data === "Success") {
                     console.log("condition verified");
                     setTimeout(() => setOpen(false), 3000);
                     setSnackMsg("OTP verified");
@@ -34,24 +33,23 @@ export default function SampleDemo() {
                         setOpen(false);
                         nav(link);
                     }, 3000);
-                    
+
                 } else {
                     setSnackMsg("Invalid OTP");
                     setSeverity("error");
-                  setOpen(true); // Show Snackbar
-                  setTimeout(() => setOpen(false), 3000);
-                  
+                    setOpen(true); // Show Snackbar
+                    setTimeout(() => setOpen(false), 3000);
                 }
                 setConfirm(response.data);
                 // sessionStorage.setItem('otp',response.data)
             })
-            .catch(err => console.log(err));            
-        };
+            .catch(err => console.log(err));
+    };
 
-        console.log(confirm);
-        
-        const sendOtp = () => {
-            axios
+    console.log(confirm);
+
+    const sendOtp = () => {
+        axios
             .get(`http://localhost:1310/mailServices/${email}`)
             .then((response) => {
                 console.log(response.data);
@@ -60,8 +58,8 @@ export default function SampleDemo() {
                 setOpen(true); // Show Snackbar
                 setTimeout(() => setOpen(false), 3000);
                 // sessionStorage.setItem('otp',response.data)
-              })
-          .catch(err => console.log(err));        
+            })
+            .catch(err => console.log(err));
     }
 
     const resendOtp = async () => {
@@ -71,7 +69,7 @@ export default function SampleDemo() {
         setTimeout(() => {
             setIsResending(false);
             console.log('OTP resent');
-           
+
         }, 1000);
     };
 
@@ -135,10 +133,10 @@ export default function SampleDemo() {
                 )}
             </div>
             <Snackbar open={open} autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} onClose={() => setOpen(false)}>
-                        <Alert onClose={() => setOpen(false)} severity={severity} variant="filled" sx={{ width: '100%' }}>
-                            {snackMsg}
-                        </Alert>
-                    </Snackbar>
+                <Alert onClose={() => setOpen(false)} severity={severity} variant="filled" sx={{ width: '100%' }}>
+                    {snackMsg}
+                </Alert>
+            </Snackbar>
 
             <style jsx>{`
                 .custom-otp-input {

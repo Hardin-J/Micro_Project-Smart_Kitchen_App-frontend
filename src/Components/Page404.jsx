@@ -37,7 +37,8 @@ const Page404 = () => {
               <button
                 onClick={handleLink}
                 className="btn btn-dark d-inline-flex align-items-center justify-content-center mb-4"
-              > <ArrowBackOutlinedIcon/>                
+              > 
+              <ArrowBackOutlinedIcon/>                
                 Back to homepage
               </button>
             </div>

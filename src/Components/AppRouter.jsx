@@ -22,6 +22,8 @@ import AdminDashboard from './Admin/AdminDashboard'
 import AdminRecipeListing from './Admin/AdminRecipeListing'
 import ListAdmin from './Admin/ListAdmin'
 import Page404 from './Page404'
+import EditRecipe from './Admin/EditRecipe'
+import EditAdmin from './Admin/EditAdmin'
 
 function AppRouter() {
   return (
@@ -44,6 +46,8 @@ function AppRouter() {
 
             <Route path="/addAdmin" element={<AddAdmin />} />
             <Route path="/addRecipe" element={<AddRecipe />} />
+            <Route path="/editRecipe/:id" element={<EditRecipe />} />                    
+            <Route path="/editAdmin/:id" element={<EditAdmin />} />                    
             <Route path="/dashboard" element={<AdminDashboard />} />            
             <Route path="/manageRecipe" element={<AdminRecipeListing />} />            
             <Route path="/manageAdmin" element={<ListAdmin />} />            

@@ -71,9 +71,9 @@ export default function AddAdmin() {
       return true;
     }
   };
-  const handleGoBack = ()=> {
+  const handleGoBack = () => {
     nav("/manageAdmin");
-}
+  }
 
   const [confPass, setConfPass] = React.useState('');
   const [alertMessage, setAlertMessage] = React.useState('');
