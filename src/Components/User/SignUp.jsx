@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { Copyright } from '../../Components/Login';
 import axios from 'axios';
+import { Alert, Snackbar } from '@mui/material';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -19,73 +20,81 @@ const defaultTheme = createTheme();
 
 export default function SignUp() {
 
-    const [data, setData] = React.useState({
-        name: '',
-        email: '',
-        password: '',
-        phoneNumber:'',
-    })
-    console.log(data);
-    
-  
+  const [data, setData] = React.useState({
+    name: '',
+    email: '',
+    password: '',
+    phoneNumber: '',
+  })
+  console.log(data);
+
+
   const nav = useNavigate();
+  const [open, setOpen] = React.useState(false);
+  const [snackMsg, setSnackMsg] = React.useState('');
 
-    let handleSubmit = (e) => {
-        e.preventDefault();
-        let result = validateValues(data);
+  let handleSubmit = (e) => {
+    e.preventDefault();
+    let result = validateValues(data);
 
-        if (result === true && confPass === true) {
-            axios
-                .post("http://localhost:1310/users", data)
-                .then((res) => {
-                    // console.log(data);
-                    console.log(res.data);
-                    // alert("User added Successfully");
-                    nav("/");
-                })
-                .catch((err) => console.log(err));
-        } else {
-            setDataMessage("Please Enter the Valid Inputs!!!");
-        }
-    };
-    const [dataStatus, setDataStatus] = React.useState('');
-    const [dataMessage, setDataMessage] = React.useState('');
-    
-    const validateValues = (data) => {
-        
-        if (data.name === "") {            
-            setDataStatus(false);
-            return false;
-        } else if (data.email === "") {
-            setDataStatus(false);
-            return false;
-        } else if (data.password === "") {
-            setDataStatus(false);
-            return false;
-        } else if (confPass === "") {
-            setDataStatus(false);
-            return false;
-        } else if (data.phoneNumber === "") {
-            setDataStatus(false);
-            return false;
-        } else {
-            setDataStatus(true);
-            return true;
-        }
-    };
+    if (result === true && confPass === true) {
+      axios
+        .post("http://localhost:1310/users", data)
+        .then((res) => {
+          // console.log(data);
+          console.log(res.data);
+          setSnackMsg("User Registered");
+          // setSeverity("success");
+          setOpen(true); // Show Snackbar
+          setTimeout(() => {
+            setOpen(false);
+            nav("/");
+          }, 3000);
+          // alert("User added Successfully");
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setDataMessage("Please Enter the Valid Inputs!!!");
+    }
+  };
+  const [dataStatus, setDataStatus] = React.useState('');
+  const [dataMessage, setDataMessage] = React.useState('');
+
+  const validateValues = (data) => {
+
+    if (data.name === "") {
+      setDataStatus(false);
+      return false;
+    } else if (data.email === "") {
+      setDataStatus(false);
+      return false;
+    } else if (data.password === "") {
+      setDataStatus(false);
+      return false;
+    } else if (confPass === "") {
+      setDataStatus(false);
+      return false;
+    } else if (data.phoneNumber === "") {
+      setDataStatus(false);
+      return false;
+    } else {
+      setDataStatus(true);
+      return true;
+    }
+  };
 
   const [confPass, setConfPass] = React.useState('');
-        const [alertMessage, setAlertMessage] = React.useState('');
+  const [alertMessage, setAlertMessage] = React.useState('');
 
-        const handleConfirmPassword = (e) => {
-            if (data.password === e.target.value) {
-                setConfPass(true);
-                setAlertMessage('Password matches!');
-            } else {
-                setConfPass(false);
-                setAlertMessage('Password does not match!');
-            }
-        }
+  const handleConfirmPassword = (e) => {
+    if (data.password === e.target.value) {
+      setConfPass(true);
+      setAlertMessage('Password matches!');
+    } else {
+      setConfPass(false);
+      setAlertMessage('Password does not match!');
+    }
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -107,9 +116,9 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-            <Grid item xs={12}>
-              {(dataStatus === false) && <div className="alert alert-danger">
-                    {dataMessage}
+              <Grid item xs={12}>
+                {(dataStatus === false) && <div className="alert alert-danger">
+                  {dataMessage}
                 </div>
                 }
               </Grid>
@@ -123,7 +132,7 @@ export default function SignUp() {
                   autoFocus
                   onChange={(e) =>
                     setData({ ...data, name: e.target.value })
-                }
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -135,7 +144,7 @@ export default function SignUp() {
                   name="email"
                   onChange={(e) =>
                     setData({ ...data, email: e.target.value })
-                }
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -147,7 +156,7 @@ export default function SignUp() {
                   name="phoneNumber"
                   onChange={(e) =>
                     setData({ ...data, phoneNumber: e.target.value })
-                }
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -160,7 +169,7 @@ export default function SignUp() {
                   id="password"
                   onChange={(e) =>
                     setData({ ...data, password: e.target.value })
-                }
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -177,16 +186,21 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-              {(confPass === false) && <div className="alert alert-danger">
-                    {alertMessage}
+                {(confPass === false) && <div className="alert alert-danger">
+                  {alertMessage}
                 </div>
                 }
-              {(confPass === true) && <div className="alert alert-success">
-                    {alertMessage}
+                {(confPass === true) && <div className="alert alert-success">
+                  {alertMessage}
                 </div>
                 }
               </Grid>
-              
+              <Snackbar open={open} autoHideDuration={6000} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} onClose={() => setOpen(false)}>
+                <Alert onClose={() => setOpen(false)} severity={"success"} variant="filled" sx={{ width: '100%' }}>
+                  {snackMsg}
+                </Alert>
+              </Snackbar>
+
             </Grid>
             <Button
               type="submit"
