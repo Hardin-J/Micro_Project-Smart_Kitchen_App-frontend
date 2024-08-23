@@ -200,7 +200,7 @@ const ProfilePage = () => {
                 </div>
                 }
               </Grid>
-              <Form.Group className="mb-3">
+              <Form.Group className="mb-3 d-none">
                 <TextField
                   fullWidth
                   label="User Id"

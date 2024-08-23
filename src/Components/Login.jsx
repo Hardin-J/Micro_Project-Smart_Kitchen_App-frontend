@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import kitchen from '../Assets/smart-kitchen.png'
 
 export function Copyright(props) {
   return (
@@ -29,11 +30,10 @@ export default function Login() {
 
     const [email, setEmail] = React.useState(''); 
     const [password, setPassword] = React.useState('')
-
     const [user,setUser] = React.useState('');
     // console.log(user);
     
-    console.log(email+"\n"+password);
+    // console.log(email+"\n"+password);
 
     const [data, setData] = React.useState({});
     
@@ -131,11 +131,12 @@ export default function Login() {
           md={7}
           sx={{
             backgroundImage:
-              'url("")',
+              `url("${kitchen}")`,
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'left',
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            backgroundRepeat:"no-repeat"
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>

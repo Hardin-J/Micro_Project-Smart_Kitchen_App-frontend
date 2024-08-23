@@ -123,6 +123,8 @@ function ListRecipes() {
     const filteredItems = recipes.filter(item =>
         item.recipeName.toLowerCase().includes(nameFilter.toLowerCase()) && item.ingredients.toLowerCase().includes(ingredientFilter.toLowerCase())
     );
+    // console.log(recipes);
+    
 
     return (
         <div className="container">
